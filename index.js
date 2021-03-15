@@ -5,6 +5,9 @@ const controllers = require('./controller')
 const NaoEncontrado = require('./errors/NaoEncontrado');
 const CampoInvalido = require('./errors/CampoInvalido');
 const EmailExistente = require('./errors/EmailExistente');
+const morgan = require('morgan');
+
+app.use(morgan('dev'));
 
 app.use(bodyParser.json());
 
