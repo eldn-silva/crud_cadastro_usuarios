@@ -8,8 +8,8 @@
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
+    "password": "desafio123",
+    "database": "cadastro_usuarios",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

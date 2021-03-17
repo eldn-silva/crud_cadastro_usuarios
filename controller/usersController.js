@@ -45,7 +45,7 @@ router.post('/', async(req, res, next) => {
         }
 
         User.create({ name, email });
-        res.status(200).json({ message: 'Usuário cadastrado com sucesso!! '})
+        res.status(201).json({ message: 'Usuário cadastrado com sucesso!! '})
     } catch (error) {
         next(error);
     }
