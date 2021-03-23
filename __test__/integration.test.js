@@ -1,6 +1,7 @@
 /**
  * @jest-environment node
  */
+require('dotenv').config();
 const request = require('supertest');
 const app = require('../index.js');
 

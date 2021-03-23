@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -12,6 +13,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 app.use('/users', controllers.users);
+app.use('/administrators', controllers.administrators);
 
 app.use((erro, req, res, next) => {
     let status = 500
