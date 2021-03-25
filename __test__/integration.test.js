@@ -5,6 +5,30 @@ require('dotenv').config();
 const request = require('supertest');
 const app = require('../index.js');
 
+token = process.env.token
+
+// test of the administrators route
+describe('POST/administrators/cadastro', () => {
+    it ("should return 201 to register administrator", async() => {
+        const response = await request(app)
+        .post('/administrators/cadastro')
+        .send({ email: "teste@gmail.com", senha: "123mudar" })
+
+    expect(response.status).toBe(201)
+    })
+})
+
+describe('POST/administrators/login', () => {
+    it ('should return 200 to login user', async() => {
+        const response = await request(app)
+        .post('/administrators/login')
+        .send({ email: "teste@gmail.com", senha: "123mudar" })
+
+    expect(response.status).toBe(200)
+    })
+})
+
+// test of the users route
 describe('GET/users', () => {
     it ('should return 200 to listen the users', async () => {
         const response = await request(app)

@@ -4,8 +4,9 @@ const router = Router();
 const CampoInvalido = require('../errors/CampoInvalido');
 const NaoEncontrado = require('../errors/NaoEncontrado');
 const EmailExistente = require('../errors/EmailExistente');
+const login = require('../middleware/login');
 
-router.get('/', async(req, res, next) => {
+router.get('/', login.obrigatorio, async(req, res, next) => {
     try {
         const users = await User.findAll();
         if (users.length == 0) {
@@ -18,7 +19,7 @@ router.get('/', async(req, res, next) => {
     
 });
 
-router.get('/:id', async(req, res, next) => {
+router.get('/:id', login.obrigatorio, async(req, res, next) => {
     try {
         const user = await User.findByPk(req.params.id);
         if (user == null) {
@@ -31,7 +32,7 @@ router.get('/:id', async(req, res, next) => {
     }
 });
 
-router.post('/', async(req, res, next) => {
+router.post('/', login.obrigatorio, async(req, res, next) => {
     try {
         const { name, email } = req.body;
         
@@ -51,7 +52,7 @@ router.post('/', async(req, res, next) => {
     }
 });
 
-router.delete('/:id', async(req, res, next) => {
+router.delete('/:id', login.obrigatorio, async(req, res, next) => {
     try {
         let userDb = await User.findAll({ where: { "id": req.params.id }})
         if (userDb.length == 0) {
@@ -71,7 +72,7 @@ router.delete('/:id', async(req, res, next) => {
     }
 })
 
-router.put('/:id', async(req, res, next) => {
+router.put('/:id', login.obrigatorio, async(req, res, next) => {
     try {
         const { name, email } = req.body;
         // validação de id inexistente
