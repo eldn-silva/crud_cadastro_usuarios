@@ -12,7 +12,7 @@ router.get('/', login.obrigatorio, async(req, res, next) => {
         if (users.length == 0) {
             throw new NaoEncontrado();
         }
-        res.status(200).json(users);
+        res.status(200).json({ users: users });
     } catch (error) {
         next(error);
     }
@@ -25,7 +25,7 @@ router.get('/:id', login.obrigatorio, async(req, res, next) => {
         if (user == null) {
             throw new NaoEncontrado(); 
         }
-        res.status(200).json(user);
+        res.status(200).json({user: user});
 
     } catch (error) {
         next(error);

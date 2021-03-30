@@ -4,8 +4,13 @@
 require('dotenv').config();
 const request = require('supertest');
 const app = require('../index.js');
+const truncate = require('./utils/truncate.js');
 
 token = process.env.token
+
+beforeAll(async () => {
+    await truncate();
+})
 
 // test of the administrators route
 describe('POST/administrators/cadastro', () => {
@@ -14,7 +19,8 @@ describe('POST/administrators/cadastro', () => {
         .post('/administrators/cadastro')
         .send({ email: "teste1@gmail.com", senha: "123mudar" })
 
-    expect(response.status).toBe(201)
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty('admCriado');
     })
 })
 
@@ -24,7 +30,8 @@ describe('POST/administrators/login', () => {
         .post('/administrators/login')
         .send({ email: "teste1@gmail.com", senha: "123mudar" })
 
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('token');
     })
 })
 
@@ -35,41 +42,24 @@ describe('PUT/administrators', () => {
         .send({ email: "teste2@gmail.com", senha: "123mudar" })
         .set('authorization', `bearer ${token}`)
 
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message');
     })
 })
 
 describe('DELETE/administrators', () => {
     it ('should return 200 to delete user', async() => {
         const response = await request(app)
-        .delete('/administrators/2')
+        .delete('/administrators/1')
         .set('authorization', `bearer ${token}`)
 
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message');
     })
 })
 
 
 // test of the users route
-describe('GET/users', () => {
-    it ('should return 200 to listen the users', async () => {
-        const response = await request(app)
-        .get('/users')
-        .set('authorization', `bearer ${token}`)
-
-    expect(response.status).toBe(200)
-    });
-});
-
-describe('GET/users/:id', () => {
-    it ('should return 200 to listen an user', async () => {
-        const response = await request(app)
-        .get('/users/29')
-        .set('authorization', `bearer ${token}`)
-
-    expect(response.status).toBe(200)
-    });
-});
 
 describe('POST/users', () => {
     it ('should return 201 to create an user', async () => {
@@ -79,26 +69,52 @@ describe('POST/users', () => {
         .set('authorization', `bearer ${token}`)
 
     expect(response.status).toBe(201)
+    expect(response.body).toHaveProperty('message')
     });
 });
 
 describe('PUT/users/:id', () => {
     it ('should return 200 to change an user', async () => {
         const response = await request(app)
-        .put('/users/37')
+        .put('/users/1')
         .send({ "name": "Marcos", "email": "marquinho@hotmail.com"})
         .set('authorization', `bearer ${token}`)
 
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message');
     });
 });
+
+describe('GET/users', () => {
+    it ('should return 200 to listen the users', async () => {
+        const response = await request(app)
+        .get('/users')
+        .set('authorization', `bearer ${token}`)
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('users');
+    });
+});
+
+describe('GET/users/:id', () => {
+    it ('should return 200 to listen an user', async () => {
+        const response = await request(app)
+        .get('/users/1')
+        .set('authorization', `bearer ${token}`)
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('user');
+    });
+});
+
 
 describe('DELETE/users/:id', () => {
     it ('should return 200 to delete an user', async () => {
         const response = await request(app)
-        .delete('/users/36')
+        .delete('/users/1')
         .set('authorization', `bearer ${token}`)
 
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message');
     });
 });
